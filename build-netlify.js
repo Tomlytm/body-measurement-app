@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 
-// Set the legacy OpenSSL provider before requiring anything else
-process.env.NODE_OPTIONS = '--openssl-legacy-provider';
-
-// Import and run the react-scripts build
+// Import and run the react-scripts build with legacy OpenSSL provider
 const spawn = require('child_process').spawn;
 
-const child = spawn('npm', ['run', 'build'], {
+const child = spawn('node', [
+  '--openssl-legacy-provider',
+  './node_modules/.bin/react-scripts',
+  'build'
+], {
   stdio: 'inherit',
   env: {
     ...process.env,
-    NODE_OPTIONS: '--openssl-legacy-provider',
     GENERATE_SOURCEMAP: 'false'
   }
 });
