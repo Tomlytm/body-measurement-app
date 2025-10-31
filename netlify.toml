@@ -1,10 +1,10 @@
 [build]
-  command = "npm run build"
+  command = "NODE_OPTIONS=--openssl-legacy-provider npm run build"
   publish = "build"
 
 [build.environment]
-  NODE_OPTIONS = "--openssl-legacy-provider"
   NODE_VERSION = "16"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 [[redirects]]
   from = "/*"
