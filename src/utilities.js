@@ -2708,7 +2708,8 @@ const POSE_CONNECTIONS = [
   [24, 26], [26, 28], [28, 30], [30, 32], [28, 32],
 ];
 
-// Body part labels for BlazePose 33 keypoints
+// Body part labels for BlazePose 33 keypoints (available for future use)
+// eslint-disable-next-line no-unused-vars
 const POSE_KEYPOINT_NAMES = [
   'nose', 'left_eye_inner', 'left_eye', 'left_eye_outer', 'right_eye_inner', 
   'right_eye', 'right_eye_outer', 'left_ear', 'right_ear', 'mouth_left', 

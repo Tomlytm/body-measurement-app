@@ -9,7 +9,7 @@
 
 // Face Mesh - https://github.com/tensorflow/tfjs-models/tree/master/facemesh
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import "./App.css";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
@@ -28,7 +28,7 @@ function App() {
   const canvasRef = useRef(null);
 
   //  Load models
-  const runDetection = async () => {
+  const runDetection = useCallback(async () => {
     try {
       // Initialize TensorFlow.js backend
       await tf.setBackend('webgl');
@@ -49,7 +49,7 @@ function App() {
     } catch (error) {
       console.error('Error loading models:', error);
     }
-  };
+  }, []);
 
   const detect = async (faceNet, poseNet) => {
     if (
@@ -89,7 +89,7 @@ function App() {
     }
   };
 
-  useEffect(()=>{runDetection()}, []);
+  useEffect(()=>{runDetection()}, [runDetection]);
 
   return (
     <div className="App">
