@@ -2689,3 +2689,85 @@ export const drawMesh = (predictions, ctx) => {
     });
   }
 };
+
+// Pose keypoint connections for drawing skeleton (BlazePose 33 keypoints)
+const POSE_CONNECTIONS = [
+  // Face
+  [0, 1], [1, 2], [2, 3], [3, 7], [0, 4], [4, 5], [5, 6], [6, 8], [9, 10],
+  // Body core
+  [11, 12], // shoulders
+  // Left arm  
+  [11, 13], [13, 15], [15, 17], [15, 19], [15, 21], [17, 19], [19, 21],
+  // Right arm
+  [12, 14], [14, 16], [16, 18], [16, 20], [16, 22], [18, 20], [20, 22],
+  // Torso
+  [11, 23], [12, 24], [23, 24], // shoulders to hips
+  // Left leg
+  [23, 25], [25, 27], [27, 29], [29, 31], [27, 31],
+  // Right leg
+  [24, 26], [26, 28], [28, 30], [30, 32], [28, 32],
+];
+
+// Body part labels for BlazePose 33 keypoints
+const POSE_KEYPOINT_NAMES = [
+  'nose', 'left_eye_inner', 'left_eye', 'left_eye_outer', 'right_eye_inner', 
+  'right_eye', 'right_eye_outer', 'left_ear', 'right_ear', 'mouth_left', 
+  'mouth_right', 'left_shoulder', 'right_shoulder', 'left_elbow', 'right_elbow',
+  'left_wrist', 'right_wrist', 'left_pinky', 'right_pinky', 'left_index',
+  'right_index', 'left_thumb', 'right_thumb', 'left_hip', 'right_hip',
+  'left_knee', 'right_knee', 'left_ankle', 'right_ankle', 'left_heel',
+  'right_heel', 'left_foot_index', 'right_foot_index'
+];
+
+// Drawing body pose
+export const drawPose = (poses, ctx) => {
+  if (poses.length > 0) {
+    poses.forEach((pose) => {
+      const keypoints = pose.keypoints;
+      
+      // Draw keypoint connections (skeleton)
+      ctx.strokeStyle = "#00ff00";
+      ctx.lineWidth = 2;
+      POSE_CONNECTIONS.forEach(([i, j]) => {
+        const kp1 = keypoints[i];
+        const kp2 = keypoints[j];
+        
+        // Only draw if both keypoints are confident
+        if (kp1.score > 0.3 && kp2.score > 0.3) {
+          ctx.beginPath();
+          ctx.moveTo(kp1.x, kp1.y);
+          ctx.lineTo(kp2.x, kp2.y);
+          ctx.stroke();
+        }
+      });
+      
+      // Draw keypoints with different colors for different body parts
+      keypoints.forEach((keypoint, i) => {
+        if (keypoint.score > 0.3) {
+          ctx.beginPath();
+          ctx.arc(keypoint.x, keypoint.y, 4, 0, 2 * Math.PI);
+          
+          // Color code different body parts
+          if (i <= 10) {
+            ctx.fillStyle = "#ff0000"; // Face - red
+          } else if (i >= 11 && i <= 16) {
+            ctx.fillStyle = "#00ff00"; // Arms - green
+          } else if (i >= 17 && i <= 22) {
+            ctx.fillStyle = "#0000ff"; // Hands - blue
+          } else if (i >= 23 && i <= 24) {
+            ctx.fillStyle = "#ffff00"; // Hips - yellow
+          } else {
+            ctx.fillStyle = "#ff00ff"; // Legs/feet - magenta
+          }
+          
+          ctx.fill();
+          
+          // Optional: draw keypoint names
+          // ctx.fillStyle = "#ffffff";
+          // ctx.font = "8px Arial";
+          // ctx.fillText(POSE_KEYPOINT_NAMES[i], keypoint.x + 5, keypoint.y - 5);
+        }
+      });
+    });
+  }
+};
