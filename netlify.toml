@@ -1,10 +1,12 @@
 [build]
-  command = "NODE_OPTIONS=--openssl-legacy-provider npm run build"
+  command = "npm ci --legacy-peer-deps && NODE_OPTIONS=--openssl-legacy-provider npm run build"
   publish = "build"
 
 [build.environment]
   NODE_VERSION = "16"
-  NPM_FLAGS = "--legacy-peer-deps"
+  NPM_CONFIG_PREFER_OFFLINE = "true"
+  NPM_CONFIG_AUDIT = "false"
+  NPM_CONFIG_FUND = "false"
 
 [[redirects]]
   from = "/*"
