@@ -33,9 +33,9 @@ This guide explains how to deploy the Body Measurement App using various platfor
 3. **Import your repository**: `Tomlytm/body-measurement-app`
 4. **Configure build settings**:
    - Framework Preset: `Create React App`
-   - Build Command: `yarn build`
+   - Build Command: `npm run build`
    - Output Directory: `build`
-   - Install Command: `yarn install`
+   - Install Command: `npm install`
 5. **Add Environment Variables**:
    - `NODE_OPTIONS`: `--openssl-legacy-provider`
 6. **Deploy**
@@ -50,7 +50,7 @@ After deployment, Vercel will provide a URL like:
 
 1. **Build the project locally**:
    ```bash
-   yarn build
+   npm run build
    ```
 
 2. **Go to [netlify.com](https://netlify.com)**
@@ -61,7 +61,7 @@ After deployment, Vercel will provide a URL like:
 1. **Create `netlify.toml`** (already configured):
    ```toml
    [build]
-     command = "yarn build"
+     command = "npm run build"
      publish = "build"
 
    [build.environment]
@@ -81,7 +81,7 @@ After deployment, Vercel will provide a URL like:
 
 1. **Install gh-pages**:
    ```bash
-   yarn add --dev gh-pages
+   npm install --save-dev gh-pages
    ```
 
 2. **Add to package.json**:
@@ -89,7 +89,7 @@ After deployment, Vercel will provide a URL like:
    {
      "homepage": "https://tomlytm.github.io/body-measurement-app",
      "scripts": {
-       "predeploy": "yarn build",
+       "predeploy": "npm run build",
        "deploy": "gh-pages -d build"
      }
    }
@@ -97,7 +97,7 @@ After deployment, Vercel will provide a URL like:
 
 3. **Deploy**:
    ```bash
-   yarn deploy
+   npm run deploy
    ```
 
 4. **Enable GitHub Pages** in repository settings
@@ -111,9 +111,9 @@ After deployment, Vercel will provide a URL like:
    FROM node:16-alpine as build
    WORKDIR /app
    COPY package*.json ./
-   RUN yarn install
+   RUN npm install
    COPY . .
-   RUN NODE_OPTIONS=--openssl-legacy-provider yarn build
+   RUN NODE_OPTIONS=--openssl-legacy-provider npm run build
 
    FROM nginx:alpine
    COPY --from=build /app/build /usr/share/nginx/html
