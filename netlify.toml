@@ -1,5 +1,5 @@
 [build]
-  command = "npm ci --legacy-peer-deps && NODE_OPTIONS=--openssl-legacy-provider npm run build"
+  command = "npm ci --legacy-peer-deps && node build-netlify.js"
   publish = "build"
 
 [build.environment]
